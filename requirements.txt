@@ -1,0 +1,2 @@
+pydentic
+fastapi[standard]
