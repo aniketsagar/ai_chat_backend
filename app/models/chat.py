@@ -8,4 +8,5 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
   conversation_id : str
   status : str
+  response : str
   
