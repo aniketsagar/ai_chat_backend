@@ -12,16 +12,18 @@ log_preamble = ":::ConversationService:::"
 class ConversationService: 
   def __init__(self):
     self.model = "gpt"
-    logger.info(":::::#################:::::::::::::::::::::")
+    logger.info(":::ConversationService:::")
     logger.info(self.model)
+    self.promptService = PromptService()
+    self.providerService= ProviderService( self.model)
   def generate_response(self,
                        message :str)-> dict[str,Any]:
     
-    prompt = PromptService().generatePrompt(message)
+    prompt = self.promptService.generatePrompt(message)
     logger.info(log_preamble + self.model)
     logger.info(prompt)
-    provider= ProviderService("gpt")
-    providerResponse = provider.sendRequest(prompt)
+   
+    providerResponse = self.providerService.sendRequest(prompt)
     
     response : dict[str,Any] = {
       "status": "successful",
