@@ -19,7 +19,7 @@ class ConversationService:
   def generate(self,
                        message :str)-> dict[str,Any]:
     
-    prompt = self.promptService.generatePrompt(message)
+    prompt = self.promptService.build_prompt(message)
     logger.info(log_preamble + self.model)
     logger.info(prompt)
    

@@ -3,7 +3,7 @@
 import logging 
 logger = logging.getLogger(__name__)
 class PromptService():
-  def generatePrompt(self,message:str):
+  def build_prompt(self,message:str):
     logger.info(":::PromptService:::")
     role = " you are a life assistent with expertise" \
     "in everything"
