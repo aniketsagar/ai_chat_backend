@@ -23,7 +23,7 @@ class ConversationService:
     logger.info(log_preamble + self.model)
     logger.info(prompt)
    
-    providerResponse = self.providerService.sendRequest(prompt)
+    providerResponse = self.providerService.generate(prompt)
     
     response : dict[str,Any] = {
       "status": "successful",
