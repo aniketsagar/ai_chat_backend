@@ -8,26 +8,27 @@ import logging
 
 
 logger = logging.getLogger(__name__)
+log_preamble = ":::ConversationService:::"
 class ConversationService: 
   def __init__(self):
     self.model = "gpt"
     logger.info(":::::#################:::::::::::::::::::::")
     logger.info(self.model)
   def generate_response(self,
-                       message :str)-> str:
+                       message :str)-> dict[str,Any]:
     
     prompt = PromptService().generatePrompt(message)
-    print("***********",self.model)
-    print("******",prompt)
+    logger.info(log_preamble + self.model)
+    logger.info(prompt)
     provider= ProviderService("gpt")
-    print(">>>>>>>>>>>>>>>>>>>>>>>",vars(provider))
     providerResponse = provider.sendRequest(prompt)
     
-    response :Any = {
+    response : dict[str,Any] = {
       "status": "successful",
       "response": providerResponse
     }
-    print("*****************",response)
+    logger.info(":::ConversationService:::")
+    logger.info(response)
     return response
 
 

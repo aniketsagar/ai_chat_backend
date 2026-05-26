@@ -12,6 +12,7 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 
 service = ConversationService()
 logger.info("*******************************")
+logger.info("created conversation service object")
 logger.info(service)
 @router.post("/")
 async def process_chat(chat: ChatRequest):

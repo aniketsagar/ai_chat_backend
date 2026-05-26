@@ -11,7 +11,7 @@ class  ProviderService():
 
   def sendRequest(self, prompt:dict[str,str]):
     response = None
-    print(">>>>>>>>>>>>>>>>>>",self)
+    logger.info(":::ProviderService:::",vars(self))
     if (self.model.lower() == "gpt"):
       response = OpenAI().processRequest(prompt)
 
