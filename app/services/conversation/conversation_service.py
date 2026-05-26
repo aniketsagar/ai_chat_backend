@@ -3,7 +3,7 @@
 
 
 class ConversationService: 
-  def generate_message(self,
+  def generate_response(self,
                        message :str)-> str:
           return f"You asked: {message}"
 

@@ -7,7 +7,7 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 service = ConversationService()
 @router.post("/")
 async def process_chat(chat: ChatRequest):
-  conversation_history = service.generate_message(chat.message)
+  conversation_history = service.generate_response(chat.message)
   res = ChatResponse (
     conversation_id = chat.conversation_id,
     status = "ok",
