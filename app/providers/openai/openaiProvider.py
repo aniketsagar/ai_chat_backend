@@ -1,14 +1,17 @@
 # this class contains the rigging of openai
-from typing import Any
-
+from openai import OpenAI
+import logging
+logger = logging.getLogger(__name__)
 class OpenAIProvider():
-  def processRequest(self,prompt:dict[str,str]):
-    request = {
-      "key":"12345asdadas",
-      "prompt": prompt["prompt"]
-    }
-
-    response : Any =  {
-      "message":"successful",
-      "request": request  }
+  def __init__(self):
+    self.client = OpenAI(
+    )
+  def processRequest(self,prompt):
+    logger.info(prompt)
+    response = self.client.responses.create(
+      model = "gpt-4.1-nano",# this is cheapest
+      input =  prompt["input"],
+      instructions = prompt["instruction"]
+    )
+   
     return response
