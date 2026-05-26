@@ -13,6 +13,7 @@ class  ProviderService():
     response = None
     logger.info(":::ProviderService:::",vars(self))
     if (self.model.lower() == "gpt"):
-      response = OpenAIProvider().processRequest(prompt)
-
+      result = OpenAIProvider().processRequest(prompt)
+      response = result.output_text
+      logger.info(":::ProviderService:::",response) 
     return response
