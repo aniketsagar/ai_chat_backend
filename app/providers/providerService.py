@@ -1,7 +1,7 @@
 # this class holds the provider rigging 
 
 #from pydantic import BaseModel
-from .openai.openai import OpenAI
+from .openai.openai import OpenAIProvider
 
 import logging 
 logger = logging.getLogger(__name__)
@@ -13,6 +13,6 @@ class  ProviderService():
     response = None
     logger.info(":::ProviderService:::",vars(self))
     if (self.model.lower() == "gpt"):
-      response = OpenAI().processRequest(prompt)
+      response = OpenAIProvider().processRequest(prompt)
 
     return response

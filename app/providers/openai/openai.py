@@ -1,7 +1,7 @@
 # this class contains the rigging of openai
 from typing import Any
 
-class OpenAI():
+class OpenAIProvider():
   def processRequest(self,prompt:dict[str,str]):
     request = {
       "key":"12345asdadas",
