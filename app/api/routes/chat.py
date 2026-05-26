@@ -16,10 +16,10 @@ logger.info("created conversation service object")
 logger.info(service)
 @router.post("/")
 async def process_chat(chat: ChatRequest):
-  conversation_history = service.generate_response(chat.message)
+  generated_response = service.generate(chat.message)
   res = ChatResponse (
     conversation_id = chat.conversation_id,
     status = "ok",
-    response= f"success:  {conversation_history}"
+    response= f"success:  {generated_response}"
   )
   return res 

@@ -16,7 +16,7 @@ class ConversationService:
     logger.info(self.model)
     self.promptService = PromptService()
     self.providerService= ProviderService( self.model)
-  def generate_response(self,
+  def generate(self,
                        message :str)-> dict[str,Any]:
     
     prompt = self.promptService.generatePrompt(message)
