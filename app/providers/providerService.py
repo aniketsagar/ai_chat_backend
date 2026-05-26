@@ -1,7 +1,7 @@
 # this class holds the provider rigging 
 
 #from pydantic import BaseModel
-from .openai.openai import OpenAIProvider
+from .openai.openaiProvider import OpenAIProvider
 
 import logging 
 logger = logging.getLogger(__name__)
