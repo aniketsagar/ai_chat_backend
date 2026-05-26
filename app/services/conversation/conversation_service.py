@@ -24,7 +24,9 @@ class ConversationService:
     logger.info(prompt)
    
     providerResponse = self.providerService.generate(prompt)
-    
+    #providerResponse ={'status': 'successful', 
+    #                    'response': 'In the golden savannah, the lion roared fiercely, reclaiming his throne from shadows of doubt.'}
+
     response : dict[str,Any] = {
       "status": "successful",
       "response": providerResponse
@@ -32,7 +34,6 @@ class ConversationService:
     logger.info(":::ConversationService:::")
     logger.info(response)
     return response
-
 
 
 
