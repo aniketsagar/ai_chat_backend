@@ -20,6 +20,6 @@ async def process_chat(chat: ChatRequest):
   res = ChatResponse (
     conversation_id = chat.conversation_id,
     status = "ok",
-    response= f"success:  {generated_response}"
+    response= f"{generated_response["response"]}"
   )
   return res 
