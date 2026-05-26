@@ -1,7 +1,6 @@
 import logging
-from pydantic import BaseModel
-from typing import Any
-class BackendLogger(BaseModel):
+
+class BackendLogger():
   def __init__(self,name:str):
     # Configure basic logging
     logging.basicConfig(
