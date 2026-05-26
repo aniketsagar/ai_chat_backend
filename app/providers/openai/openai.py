@@ -1,8 +1,7 @@
 # this class contains the rigging of openai
-from pydantic import BaseModel
 from typing import Any
 
-class OpenAI(BaseModel):
+class OpenAI():
   def processRequest(self,prompt:dict[str,str]):
     request = {
       "key":"12345asdadas",
