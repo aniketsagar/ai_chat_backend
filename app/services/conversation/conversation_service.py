@@ -22,8 +22,12 @@ class ConversationService:
     prompt = self.promptService.build_prompt(message)
     logger.info(log_preamble + self.model)
     logger.info(prompt)
-   
-    providerResponse = self.providerService.generate(prompt)
+
+    try:
+      providerResponse = self.providerService.generate(prompt)
+    except Exception as e:
+      logger.info(f"::ProviderService::Exception::{e}")
+      providerResponse ={"error":e}
     # providerResponse ={'status': 'successful', 
     #                    'response': 'In the golden savannah, the lion roared fiercely, reclaiming his throne from shadows of doubt.'}
 
