@@ -7,7 +7,6 @@ class OpenAIProvider():
   def __init__(self):
     try:
       self.client = OpenAI(
-        #api_key ="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"
       )
     except Exception as e:
       logger.info(f"::Failed to create OpenAI object::Error::{e}")
