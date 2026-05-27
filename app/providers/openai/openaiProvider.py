@@ -4,9 +4,10 @@ from openai import OpenAI, OpenAIError
 import logging
 logger = logging.getLogger(__name__)
 class OpenAIProvider():
-  def __init__(self):
+  def __init__(self,max_retries:int=0):
     try:
       self.client = OpenAI(
+        max_retries=max_retries,
       )
     except Exception as e:
       logger.info(f"::Failed to create OpenAI object::Error::{e}")
