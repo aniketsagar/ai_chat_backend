@@ -8,6 +8,7 @@ class OpenAIProvider():
     try:
       self.client = OpenAI(
         max_retries=max_retries,
+        timeout=120
       )
     except Exception as e:
       logger.info(f"::Failed to create OpenAI object::Error::{e}")
