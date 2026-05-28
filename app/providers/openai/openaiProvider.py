@@ -15,11 +15,11 @@ class OpenAIProvider():
     logger.info(prompt)
     response = None 
     try:
-      
       response = self.client.responses.create(
         model = "gpt-4.1-nano",# this is cheapest
         input =  prompt["input"],
-        instructions = prompt["instruction"]
+        instructions = prompt["instruction"],
+        store=False
       )
     except OpenAIError as e:
       response = {
