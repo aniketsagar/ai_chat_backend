@@ -14,7 +14,7 @@ class  ProviderService():
     logger.info(":::ProviderService:::",vars(self))
     if (self.model.lower() == "gpt"):
       try:
-        result = OpenAIProvider().processRequest(prompt)
+        result = OpenAIProvider().generate(prompt)
         response = result.output_text
       except Exception as e:
         logger.info(f"::Exception::{e}")

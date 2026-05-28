@@ -11,7 +11,7 @@ class OpenAIProvider():
       )
     except Exception as e:
       logger.info(f"::Failed to create OpenAI object::Error::{e}")
-  def processRequest(self,prompt):
+  def generate(self,prompt):
     logger.info(prompt)
     response = None 
     try:
