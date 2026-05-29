@@ -12,6 +12,7 @@ class OpenAIProvider():
         max_retries=max_retries,
         timeout=120,
       )
+      self.provider = "openai"
     except Exception as e:
       logger.info(f"::Failed to create OpenAI object::Error::{e}")
   def generate(self,prompt) -> OpenAIProviderResult:
@@ -21,7 +22,7 @@ class OpenAIProvider():
     error = None
     error_type = None 
     response = None 
-    provider = "openai"
+    provider =self.provider
     clientResponse = None
     
 
