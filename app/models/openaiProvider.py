@@ -6,4 +6,4 @@ class OpenAIProviderResult(BaseModel):
   error : Optional[str] = None 
   error_type: Optional[str] = None 
   provider : str
-  error_code:Optional[str|int] = None 
+  error_code:Optional[str] = None 
