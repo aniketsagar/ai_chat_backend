@@ -2,7 +2,7 @@
 
 #from pydantic import BaseModel
 from .openai.openaiProvider import OpenAIProvider
-
+from ..models.providerService import ProviderServiceResponse
 import logging 
 logger = logging.getLogger(__name__)
 class  ProviderService():
@@ -19,15 +19,29 @@ class  ProviderService():
     
     if(self.provider):
       try:
-        result = self.provider.generate(prompt)
-        response = result.output_text
+        providerResult = self.provider.generate(prompt)
+        response = ProviderServiceResponse(
+          success = True,
+          result = providerResult.result,
+          provider_name = providerResult.provider 
+        )
+
       except Exception as e:
         logger.info(f"::Exception::{e}")
-        response = result
+        response = ProviderServiceResponse(
+          success = False,
+          error_code = "internal_server_error",
+          error = f"::Exception::{e}"
+        )
       
       logger.info(":::ProviderService:::")
       logger.info(response) 
     else:
       logger.info(":::ProviderService::: Error:: No provider found")
       logger.info(response) 
+      response =   ProviderServiceResponse(
+        success = False,
+        error_code = "internal_server_error",
+        error = f"::Exception::No Provider found"
+      )
     return response
