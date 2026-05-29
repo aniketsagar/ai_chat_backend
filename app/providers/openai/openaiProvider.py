@@ -16,13 +16,14 @@ class OpenAIProvider():
   def generate(self,prompt) -> OpenAIProviderResult:
     logger.info(prompt)
     response = None
+    error_code = None
+    error = None
+    error_type = None 
+    response = None 
+    provider = "OPENAI"
+    clientResponse = None
     try:
-      error_code = None
-      error = None
-      error_type = None 
-      response = None 
-      provider : "openai"
-      clientResponse = None
+     
       clientResponse = self.client.responses.create(
         model = "gpt-4.1-nano",# this is cheapest
         input =  prompt["input"],
@@ -74,6 +75,8 @@ class OpenAIProvider():
       error = e
       logger.info(f"::openai provider:: {e}")
     
+    logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    logger.info(clientResponse)
     if(clientResponse):
       response = OpenAIProviderResult(
         success= True,
@@ -81,15 +84,17 @@ class OpenAIProvider():
         provider = provider
       )
     else:
+      logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN else")
       response = OpenAIProviderResult(
         success = False,
-        error = error,
+        error = None,
         error_type = error_type,
         provider = provider,
         error_code=error_code 
       )
-
-
+      logger.info("OpenAI response IN ELSE ##########")
+      logger.info(response)
     logger.info("OpenAI response ##########")
     logger.info(response)
+    logger.info("OpenAI response ?>>>>>>>>>>>>>>>>>>>>>##########")
     return response
