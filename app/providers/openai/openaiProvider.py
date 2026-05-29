@@ -23,6 +23,8 @@ class OpenAIProvider():
     response = None 
     provider = "openai"
     clientResponse = None
+    
+
     try:
      
       clientResponse = self.client.responses.create(
@@ -34,45 +36,45 @@ class OpenAIProvider():
     except openai.BadRequestError as e: # Don't forget to add openai
       # Handle error 400
       error_code = str(400)
-      error_type = "Bad Request Error"
+      error_type = "BAD_REQUEST_ERROR"
       logger.info(f"Error 400: {e}")
     except openai.AuthenticationError as e: # Don't forget to add openai
       # Handle error 401
       error_code = str(401)
-      error_type = "Authentication Error"
+      error_type = "AUTH_ERROR"
       logger.info(f"Error 401: {e}")
     except openai.PermissionDeniedError as e: # Don't forget to add openai
       # Handle error 403
       error_code = str(403)
-      error_type = "Permission Denied Error"
+      error_type = "PERMISSION_DENIED_ERROR"
       logger.info(f"Error 403: {e}")
     except openai.NotFoundError as e: # Don't forget to add openai
       # Handle error 404
       error_code = str(404)
-      error_type = "Not Found Error"
+      error_type = "NOT_FOUND_ERROR"
       logger.info(f"Error 404: {e}")
     except openai.UnprocessableEntityError as e: # Don't forget to add openai
       # Handle error 422
       error_code = str(422)
-      error_type = "Unprocessable Entity Error"
+      error_type = "UNPROCESSABLE_ENTITY_ERROR"
       logger.info(f"Error 422: {e}")
     except openai.RateLimitError as e: # Don't forget to add openai
       # Handle error 429
       error_code = str(429)
-      error_type = "Rate Limit Error"
+      error_type = "RATE_LIMIT_ERROR"
       logger.info(f"Error 429: {e}")
     except openai.InternalServerError as e: # Don't forget to add openai
       # Handle error >=500
       error_code = str(500)
-      error_type = "Internal Server Error"
+      error_type = "INTERNAL_SERVER_ERROR"
       logger.info(f"Error >=500: {e}")
     except openai.APIConnectionError as e: # Don't forget to add openai
       # Handle API connection error
       error_code = None
-      error_type = "API connection error"
+      error_type = "API_CONNECTION_ERROR"
       logger.info(f"API connection error: {e}")
     except openai.OpenAIError as e:
-      error_code = str(403)
+      error_type = "OPENAI_ERROR"
       error = e
       logger.info(f"::openai provider:: {e}")
     
