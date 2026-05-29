@@ -10,28 +10,39 @@ class  ProviderService():
     self.model = model
     if (self.model == "gpt"):
       self.provider = OpenAIProvider()
+      self.provider_name = "openai"
     else: 
         self.provider = None
 
-  def generate(self, prompt:dict[str,str]):
+  def generate(self, prompt:dict[str,str])->ProviderServiceResponse:
     response = None
     logger.info(":::ProviderService:::",vars(self))
     
     if(self.provider):
       try:
         providerResult = self.provider.generate(prompt)
-        response = ProviderServiceResponse(
-          success = True,
-          result = providerResult.result,
-          provider_name = providerResult.provider 
-        )
+        if(providerResult.success):
+            
+          response = ProviderServiceResponse(
+            success = True,
+            result = providerResult.result,
+            provider_name = providerResult.provider 
+          )
+        else:
+          response = ProviderServiceResponse(
+            success = False,
+            error_code = providerResult.error_code,
+            error = providerResult.error_type,
+            provider_name = self.provider_name 
+          )
 
       except Exception as e:
         logger.info(f"::Exception::{e}")
         response = ProviderServiceResponse(
           success = False,
           error_code = "internal_server_error",
-          error = f"::Exception::{e}"
+          error = f"::Exception::{e}",
+          provider_name = self.provider_name 
         )
       
       logger.info(":::ProviderService:::")
@@ -42,6 +53,7 @@ class  ProviderService():
       response =   ProviderServiceResponse(
         success = False,
         error_code = "internal_server_error",
-        error = f"::Exception::No Provider found"
+        error = f"::Exception::No Provider found",
+         provider_name = self.provider_name 
       )
     return response

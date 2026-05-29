@@ -92,8 +92,6 @@ class OpenAIProvider():
         provider = provider,
         error_code=error_code 
       )
-      logger.info("OpenAI response IN ELSE ##########")
-      logger.info(response)
     logger.info("OpenAI response ##########")
     logger.info(response)
     logger.info("OpenAI response ?>>>>>>>>>>>>>>>>>>>>>##########")
