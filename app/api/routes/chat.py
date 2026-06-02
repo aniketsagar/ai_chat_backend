@@ -49,3 +49,28 @@ async def process_chat(chat: ChatRequest) -> ChatResponse:
       provider_name=generated_response.provider_name
     )
   return res 
+
+
+
+
+@router.post("/stream")
+async def process_chat(chat: ChatRequest):
+
+  try:
+    result = service.stream(chat.message,chat.conversation_id) 
+
+    for chunk in result:
+      print(chunk)
+      yield chunk
+    
+  except Exception as e:
+    logger.info(f"::ChatApi::Exception::{e}")
+    res = ChatResponse (
+      conversation_id = chat.conversation_id,
+      status = "Failed",
+      success=False,
+      error="internal server error",
+      error_code="500",
+      provider_name="openai"
+    )
+    yield res 
