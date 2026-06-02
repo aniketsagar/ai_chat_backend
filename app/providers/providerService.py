@@ -59,16 +59,15 @@ class  ProviderService():
       )
     return response
 
-  @contextmanager
+  
   def stream(self, prompt:dict[str,str]):
     response = None
     logger.info(":::ProviderService:::",vars(self))
     
     if(self.provider):
       try:
-        with self.provider.stream(prompt) as stream:
-          for chunk in stream:
-            yield chunk
+        for chunk in self.provider.stream(prompt):
+          yield chunk
       except Exception as e:
         logger.info(f"::Exception::{e}")
         response = ProviderServiceResponse(
