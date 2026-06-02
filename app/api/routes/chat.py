@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from ...models.chat import ChatRequest, ChatResponse
 from ...services.conversation.conversation_service import ConversationService
-
+from fastapi.sse import EventSourceResponse
 import logging
 
 logger = logging.getLogger(__name__)
@@ -53,24 +53,10 @@ async def process_chat(chat: ChatRequest) -> ChatResponse:
 
 
 
-@router.post("/stream")
+@router.post("/stream", response_class=EventSourceResponse)
 async def process_chat(chat: ChatRequest):
-
-  try:
-    result = service.stream(chat.message,chat.conversation_id) 
-
-    for chunk in result:
-      print(chunk)
-      yield chunk
-    
-  except Exception as e:
-    logger.info(f"::ChatApi::Exception::{e}")
-    res = ChatResponse (
-      conversation_id = chat.conversation_id,
-      status = "Failed",
-      success=False,
-      error="internal server error",
-      error_code="500",
-      provider_name="openai"
-    )
-    yield res 
+  
+  for event in service.stream(chat.message,chat.conversation_id):
+    yield event
+  
+  
