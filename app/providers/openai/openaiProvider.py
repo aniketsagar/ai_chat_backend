@@ -108,7 +108,7 @@ class OpenAIProvider():
     return response
   
   # streaming the response from openai 
-  @contextmanager
+  
   def stream(self,prompt) :
     logger.info(prompt)
     response = None
@@ -121,15 +121,15 @@ class OpenAIProvider():
     
     try:
      
-      with self.client.responses.create(
+      stream = self.client.responses.create(
         model = "gpt-4.1-nano",# this is cheapest
         input =  prompt["input"],
         instructions = prompt["instruction"],
         store=False,
         stream = True
-      ) as stream:
-        for event in stream:
-          yield event
+      ) 
+      for event in stream:
+        yield event
     except openai.BadRequestError as e: # Don't forget to add openai
       # Handle error 400
       error_code = str(400)
