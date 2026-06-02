@@ -5,7 +5,6 @@ from openai import OpenAI
 import logging
 from dotenv import find_dotenv, load_dotenv
 from ...models.openaiProvider import OpenAIProviderResult
-from contextlib import contextmanager
 logger = logging.getLogger(__name__)
 
 load_dotenv(find_dotenv("local"))
