@@ -72,11 +72,11 @@ class ConversationService:
     conversation_id = conversation_id
     try:
 
-     with self.providerService.stream(prompt) as stream:
-       for chunk in stream:
-         print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
-         print(chunk)
-         yield chunk
+      for chunk in self.providerService.stream(prompt):
+       
+        print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
+        print(chunk)
+        yield chunk
 
     except Exception as e:
       logger.info(f"::ProviderService::Exception::{e}")
