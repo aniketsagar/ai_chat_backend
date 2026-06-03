@@ -74,8 +74,8 @@ class ConversationService:
 
       for chunk in self.providerService.stream(prompt):
        
-        print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
-        print(chunk)
+        # print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
+        # print(chunk)
         yield chunk
 
     except Exception as e:

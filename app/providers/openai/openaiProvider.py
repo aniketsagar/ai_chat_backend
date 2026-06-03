@@ -128,7 +128,11 @@ class OpenAIProvider():
         stream = True
       ) 
       for event in stream:
-        yield event
+        print (event)
+        if(event.type == "response.output_text.delta"):
+          yield event.delta
+        
+       
     except openai.BadRequestError as e: # Don't forget to add openai
       # Handle error 400
       error_code = str(400)
