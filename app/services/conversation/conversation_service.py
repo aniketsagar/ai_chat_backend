@@ -4,9 +4,9 @@
 from ...prompts.promptService import PromptService
 from ...providers.providerService import ProviderService
 from ...models.conversationService import ConversationServiceResponse
-
+from ..storage.cache.cachingService import CachingService
 import logging
-from contextlib import contextmanager
+
 
 logger = logging.getLogger(__name__)
 log_preamble = ":::ConversationService:::"
@@ -17,6 +17,7 @@ class ConversationService:
     logger.info(self.model)
     self.promptService = PromptService()
     self.providerService= ProviderService( self.model)
+    self.conversation_cache = CachingService()
   def generate(self,
                        message :str, conversation_id :str)-> ConversationServiceResponse:
     
@@ -73,11 +74,12 @@ class ConversationService:
     try:
 
       for chunk in self.providerService.stream(prompt):
-       
+        self.conversation_cache.write(conversation_id,chunk)
         # print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
-        # print(chunk)
+        # print(self.conversation_cache.read(conversation_id))
         yield chunk
-
+      print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
+      print(self.conversation_cache.read(conversation_id))
     except Exception as e:
       logger.info(f"::ProviderService::Exception::{e}")
       response = ConversationServiceResponse(
