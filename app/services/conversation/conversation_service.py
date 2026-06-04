@@ -5,7 +5,9 @@ from ...prompts.promptService import PromptService
 from ...providers.providerService import ProviderService
 from ...models.conversationService import ConversationServiceResponse
 from ..storage.cache.cachingService import CachingService
+from ..storage.file.conversationStorage import ConversationStorage
 import logging
+
 
 
 logger = logging.getLogger(__name__)
@@ -18,6 +20,7 @@ class ConversationService:
     self.promptService = PromptService()
     self.providerService= ProviderService( self.model)
     self.conversation_cache = CachingService()
+    self.conversation_repo = ConversationStorage()
   def generate(self,
                        message :str, conversation_id :str)-> ConversationServiceResponse:
     
@@ -36,6 +39,11 @@ class ConversationService:
           result= providerResponse.result,
           provider_name=providerResponse.provider_name
         )
+        if(providerResponse.result):
+          self.conversation_cache.write(conversation_id,providerResponse.result)
+          print("::***************CACHE*************::::::::*************::::::::")
+          print(self.conversation_cache.read(conversation_id))
+          self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
       else:
         response = ConversationServiceResponse(
           conversation_id = conversation_id,
@@ -80,6 +88,8 @@ class ConversationService:
         yield chunk
       print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
       print(self.conversation_cache.read(conversation_id))
+      self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
+
     except Exception as e:
       logger.info(f"::ProviderService::Exception::{e}")
       response = ConversationServiceResponse(
