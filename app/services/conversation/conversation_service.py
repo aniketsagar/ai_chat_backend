@@ -89,7 +89,8 @@ class ConversationService:
       print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
       print(self.conversation_cache.read(conversation_id))
       self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
-
+      self.conversation_cache.delete(conversation_id)
+      print(self.conversation_cache.read(conversation_id))
     except Exception as e:
       logger.info(f"::ProviderService::Exception::{e}")
       response = ConversationServiceResponse(
