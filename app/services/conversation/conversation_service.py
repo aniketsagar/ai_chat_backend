@@ -44,6 +44,9 @@ class ConversationService:
           print("::***************CACHE*************::::::::*************::::::::")
           print(self.conversation_cache.read(conversation_id))
           self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
+          self.conversation_cache.delete(conversation_id)
+          print("::***************CACHE*************::::::::*************::::::::")
+          print(self.conversation_cache.read(conversation_id))
       else:
         response = ConversationServiceResponse(
           conversation_id = conversation_id,
@@ -90,6 +93,7 @@ class ConversationService:
       print(self.conversation_cache.read(conversation_id))
       self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
       self.conversation_cache.delete(conversation_id)
+      print("::***************CACHE*************::::::::*************::::::::")
       print(self.conversation_cache.read(conversation_id))
     except Exception as e:
       logger.info(f"::ProviderService::Exception::{e}")
