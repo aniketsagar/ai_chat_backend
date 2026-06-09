@@ -25,3 +25,9 @@ class CachingService():
       return self.conversation_cache[conversation_id]
     except:
       return None
+  
+  def delete(self, conversation_id):
+    try:
+      return self.conversation_cache.pop(conversation_id, None)
+    except:
+      return None 
