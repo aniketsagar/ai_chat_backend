@@ -7,3 +7,6 @@ class ProviderServiceResponse(BaseModel):
   result : Optional[str] = None
   error_code : Optional[str] = None
   error : Optional[str] = None
+  timestamp : float
+  conversation_id: str
+  response_status: Optional[str] = None
