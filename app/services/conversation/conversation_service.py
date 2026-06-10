@@ -24,7 +24,7 @@ class ConversationService:
   def generate(self,
                        message :str, conversation_id :str)-> ConversationServiceResponse:
     
-    prompt = self.promptService.build_prompt(message)
+    prompt = self.promptService.build_prompt(message,conversation_id)
     logger.info(log_preamble + self.model)
     logger.info(prompt)
     conversation_id = conversation_id
@@ -78,7 +78,7 @@ class ConversationService:
   
   def stream(self, message :str, conversation_id :str):
     
-    prompt = self.promptService.build_prompt(message)
+    prompt = self.promptService.build_prompt(message,conversation_id)
     logger.info(log_preamble + self.model)
     logger.info(prompt)
     conversation_id = conversation_id
@@ -88,6 +88,7 @@ class ConversationService:
         self.conversation_cache.write(conversation_id,chunk)
         # print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
         # print(self.conversation_cache.read(conversation_id))
+        print("************&&&&&&&&&&&&&&&&CHUNK&&&&&&&&&&&&&&****************")
         yield chunk
       print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
       print(self.conversation_cache.read(conversation_id))
