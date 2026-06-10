@@ -4,17 +4,31 @@ class CachingService():
     # creating a dict of this kind 
     # CONVERSATION_CACHE = {
     #   "convid1":{
-    #     "data":"this is an example"
+    #     "data":"this is an example",
+    #     "conversation_id": conversation_id
+    #     "timestamp": time at which event was generated.
+    #     "status": Started/InProgress/Completed/Failed
     #   }
     # }
     self.conversation_cache = {}
 
   def write(self, conversation_id:str , chunk:str) :
     try:
-      self.conversation_cache[conversation_id]["data"] += chunk 
+      print(">>>>>>>>>>>>>>>>>>>>>CACHE<<<<<<<<<<<<<<<<<<<<<<<<<<")
+      print(chunk)
+      if(chunk["data"]):
+        self.conversation_cache[conversation_id]["data"] += chunk["data"] 
+      self.conversation_cache[conversation_id]["timestamp"] = chunk["timestamp"]
+      self.conversation_cache[conversation_id]["response_status"] = chunk["response_status"]
+      self.conversation_cache[conversation_id]["conversation_id"] = conversation_id
+
     except:
-  
-      self.conversation_cache[conversation_id] =  {"data":chunk}
+      if(chunk["data"]):
+        self.conversation_cache[conversation_id] =  {"data":chunk["data"]}
+      else:
+        self.conversation_cache[conversation_id] =  {"data":None}
+      self.conversation_cache[conversation_id]["timestamp"] = chunk["timestamp"]
+      self.conversation_cache[conversation_id]["response_status"] = chunk["response_status"]
       self.conversation_cache[conversation_id]["conversation_id"] = conversation_id
 
   def read(self,conversation_id):
