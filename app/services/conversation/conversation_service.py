@@ -40,7 +40,15 @@ class ConversationService:
           provider_name=providerResponse.provider_name
         )
         if(providerResponse.result):
-          self.conversation_cache.write(conversation_id,providerResponse.result)
+          print("$$$$$$$$$$$$PROVIDER RESP $$$$$$$$$$$$$$$$$$$")
+          print(providerResponse)
+          chunk = {
+            "data":providerResponse.result,
+            "conversation_id":providerResponse.conversation_id,
+            "timestamp":providerResponse.timestamp,
+            "response_status":providerResponse.response_status
+          }
+          self.conversation_cache.write(conversation_id,chunk)
           print("::***************CACHE*************::::::::*************::::::::")
           print(self.conversation_cache.read(conversation_id))
           self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
@@ -57,7 +65,7 @@ class ConversationService:
           provider_name=providerResponse.provider_name
         )
     except Exception as e:
-      logger.info(f"::ProviderService::Exception::{e}")
+      logger.info(f"::ConversationService***::Exception::{e}")
       providerResponse ={"error":e}
       response = ConversationServiceResponse(
         conversation_id = conversation_id,
@@ -85,19 +93,23 @@ class ConversationService:
     try:
 
       for chunk in self.providerService.stream(prompt):
+        print("*****WRITING TO CACHE************")
+        print(chunk)
         self.conversation_cache.write(conversation_id,chunk)
         # print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
         # print(self.conversation_cache.read(conversation_id))
-        print("************&&&&&&&&&&&&&&&&CHUNK&&&&&&&&&&&&&&****************")
-        yield chunk
+        # print("************&&&&&&&&&&&&&&&&CHUNK&&&&&&&&&&&&&&****************")
+        # print(chunk)
+        if(chunk["data"]):
+          yield chunk["data"]
       print ("!@#!@#@#!@#!#!@#!@#(((((((())))))))))))))))*******************")
       print(self.conversation_cache.read(conversation_id))
       self.conversation_repo.write(conversation_id,self.conversation_cache.read(conversation_id))
       self.conversation_cache.delete(conversation_id)
-      print("::***************CACHE*************::::::::*************::::::::")
-      print(self.conversation_cache.read(conversation_id))
+      # print("::***************CACHE*************::::::::*************::::::::")
+      # print(self.conversation_cache.read(conversation_id))
     except Exception as e:
-      logger.info(f"::ProviderService::Exception::{e}")
+      logger.info(f"::ConversationService*****&&&&&&::Exception::{e}")
       response = ConversationServiceResponse(
         conversation_id = conversation_id,
         status = "Failed",
