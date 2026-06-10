@@ -1,5 +1,6 @@
 # this class contains the rigging of openai
 import os
+from datetime import datetime
 import openai
 from openai import OpenAI
 import logging
@@ -29,8 +30,8 @@ class OpenAIProvider():
     response = None 
     provider =self.provider
     clientResponse = None
-    
-
+    conversation_id = prompt["conversation_id"]
+    timestamp = None
     try:
      
       clientResponse = self.client.responses.create(
@@ -90,7 +91,10 @@ class OpenAIProvider():
       response = OpenAIProviderResult(
         success= True,
         result = clientResponse.output_text,
-        provider = provider
+        provider = provider,
+        timestamp = datetime.now().timestamp(),
+        conversation_id=conversation_id,
+        response_status="completed"
       )
     else:
       logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IN else")
@@ -99,7 +103,10 @@ class OpenAIProvider():
         error = None,
         error_type = error_type,
         provider = provider,
-        error_code=error_code 
+        error_code=error_code ,
+        timestamp = datetime.now().timestamp(),
+        conversation_id=conversation_id,
+        response_status="failed"
       )
     logger.info("OpenAI response ##########")
     logger.info(response)
@@ -109,6 +116,15 @@ class OpenAIProvider():
   # streaming the response from openai 
   
   def stream(self,prompt) :
+
+    
+    # {
+    # data:"",
+    # timestamp:"",
+    # response_status:"",
+    # conversation_id:""
+    # }
+
     logger.info(prompt)
     response = None
     error_code = None
@@ -119,7 +135,7 @@ class OpenAIProvider():
     stream = None
     
     try:
-     
+      conversation_id = prompt["conversation_id"]
       stream = self.client.responses.create(
         model = "gpt-4.1-nano",# this is cheapest
         input =  prompt["input"],
@@ -129,8 +145,23 @@ class OpenAIProvider():
       ) 
       for event in stream:
         print (event)
+        chunk = {
+          "data":None,
+          "timestamp":datetime.now().timestamp(),
+          "response_status":None,
+          "converstation_id":conversation_id
+        }
+        if(event.type== "response.created" or
+           event.type == "response.output_text.delta" or
+          event.type == "response.in_progress" ):
+          chunk["response_status"]= "in_progress"
+        elif(event.type=="response.output_text.done" or 
+             event.type == "response.content_part.done" or 
+             event.type =="response.completed"):
+          chunk["response_status"]= "completed"
         if(event.type == "response.output_text.delta"):
-          yield event.delta
+          chunk["data"] = event.delta
+        yield chunk
         
        
     except openai.BadRequestError as e: # Don't forget to add openai
