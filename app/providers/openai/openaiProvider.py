@@ -216,7 +216,9 @@ class OpenAIProvider():
         error = None,
         error_type = error_type,
         provider = provider,
-        error_code=error_code 
+        error_code=error_code,
+        timestamp:datetime.now().timestamp(),
+        conversation_id=conversation_id
       )
       logger.info("OpenAI response ##########")
       logger.info(response)
