@@ -5,7 +5,7 @@ from .openai.openaiProvider import OpenAIProvider
 from ..models.providerService import ProviderServiceResponse
 import logging 
 from datetime import datetime
-from contextlib import  contextmanager
+from ..test.mock_provider import MockProvider
 logger = logging.getLogger(__name__)
 class  ProviderService():
 
@@ -74,26 +74,30 @@ class  ProviderService():
     return response
 
   
-  def stream(self, prompt:dict[str,str]):
+  def stream(self, prompt:dict[str,str],debug:False):
     response = None
     logger.info(":::ProviderService:::",vars(self))
     conversation_id = prompt["conversation_id"]
     if(self.provider):
-      try:
-        for chunk in self.provider.stream(prompt):
-          yield chunk
-      except Exception as e:
-        logger.info(f":: THIS Exception::{e}")
-        response = ProviderServiceResponse(
-          success = False,
-          error_code = "internal_server_error",
-          error = f"::Exception::{e}",
-          provider_name = self.provider_name,
-          conversation_id=conversation_id,
-          timestamp=datetime.now().timestamp(),
-          response_status="failed"
-        )
-      
+      if(debug):
+        # I need to change this stream method to accept some params
+        MockProvider().stream()
+      else:
+        try:
+          for chunk in self.provider.stream(prompt):
+            yield chunk
+        except Exception as e:
+          logger.info(f":: THIS Exception::{e}")
+          response = ProviderServiceResponse(
+            success = False,
+            error_code = "internal_server_error",
+            error = f"::Exception::{e}",
+            provider_name = self.provider_name,
+            conversation_id=conversation_id,
+            timestamp=datetime.now().timestamp(),
+            response_status="failed"
+          )
+        
       logger.info(":::ProviderService:::")
       logger.info(response) 
     else:
