@@ -13,8 +13,11 @@ import logging
 logger = logging.getLogger(__name__)
 log_preamble = ":::ConversationService:::"
 class ConversationService: 
-  def __init__(self):
-    self.model = "gpt"
+  def __init__(self,debug:False):
+    if(debug):
+      self.model = "mock"
+    else:
+      self.model = "gpt"
     logger.info(":::ConversationService:::")
     logger.info(self.model)
     self.promptService = PromptService()
